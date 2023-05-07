@@ -1,0 +1,214 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}我的签到{% endblock %}
+{% load staticfiles %}
+{% block head %}
+         <link rel="stylesheet" href="{% static 'css/qiandao_style.css' %}">
+         <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+    <script>
+    $(function() {
+    var signFun = function() {
+
+    var dateArray = []; // 假设已经签到的
+    var sign_day={{ all_day|safe }};
+    dateArray=sign_day;
+    var us_count={{ us_count }}
+    var $dateBox = $("#js-qiandao-list"),
+        $currentDate = $(".current-date"),
+        $qiandaoBnt = $("#js-just-qiandao"),
+        _html = '',
+        _handle = true,
+        myDate = new Date();
+
+
+         if (us_count>0){
+        $qiandaoBnt.addClass('actived');
+    }
+        $currentDate.text(myDate.getFullYear() + '年' + parseInt(myDate.getMonth() + 1) + '月' + myDate.getDate() + '日');
+
+        var monthFirst = new Date(myDate.getFullYear(), parseInt(myDate.getMonth()), 1).getDay();
+
+        var d = new Date(myDate.getFullYear(), parseInt(myDate.getMonth() + 1), 0);
+        var totalDay = d.getDate(); //获取当前月的天数
+
+        for (var i = 0; i < 42; i++) {
+            _html += ' <li><div class="qiandao-icon"></div></li>'
+        }
+        $dateBox.html(_html) //生成日历网格
+
+        var $dateLi = $dateBox.find("li");
+
+
+        for (var i = 0; i < totalDay; i++) {
+            $dateLi.eq(i + monthFirst).addClass("date" + parseInt(i + 1));
+            for (var j = 0; j < dateArray.length; j++) {
+                if (i+1 == dateArray[j]) {
+                    $dateLi.eq(i + monthFirst).addClass("qiandao");
+                }
+            }
+        } //生成当月的日历且含已签到
+
+        $(".date" + myDate.getDate()).addClass('able-qiandao');
+
+        $dateBox.on("click", "li", function() {
+                if ($(this).hasClass('able-qiandao') && _handle) {
+                    $(this).addClass('qiandao');
+                    qiandaoFun();
+                }
+            }) //签到
+
+        $qiandaoBnt.on("click", function() {
+            if (_handle) {
+                qiandaoFun();
+            }
+        }); //签到
+
+        function qiandaoFun() {
+                $.ajax({
+                        cache: false,
+                        type: "POST",
+                        url:"{% url "users:sign" %}",
+                        data:{},
+                        async: true,
+                        beforeSend:function(xhr, settings){
+                            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                        },
+                        success: function(data) {
+                            if(data.status == 'ok'){
+
+                                     $qiandaoBnt.addClass('actived');
+                                        openLayer("qiandao-active", qianDao);
+                                        _handle = false;
+
+                            }
+                        },
+                    });
+
+        }
+
+        function qianDao() {
+            $(".date" + myDate.getDate()).addClass('qiandao');
+        }
+    }();
+
+    function openLayer(a, Fun) {
+        $('.' + a).fadeIn(Fun)
+    } //打开弹窗
+
+    var closeLayer = function() {
+            $("body").on("click", ".close-qiandao-layer", function() {
+                $(this).parents(".qiandao-layer").fadeOut()
+            })
+        }() //关闭弹窗
+
+    $("#js-qiandao-history").on("click", function() {
+        openLayer("qiandao-history-layer", myFun);
+
+        function myFun() {
+            console.log(1)
+        } //打开弹窗返回函数
+    })
+
+})
+
+    </script>
+{% endblock %}
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="/users/info/">个人中心</a>></li>
+                <li>签到</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block right_content %}
+
+<div class="right" style="width: 1035px">
+	<div >
+
+		<div class="qiandao-con clear">
+			<div class="qiandao-left">
+				<div class="qiandao-left-top clear">
+					<div class="current-date">2016年1月6日</div>
+					<div class="qiandao-history qiandao-tran qiandao-radius" id="js-qiandao-history">我的签到</div>
+				</div>
+				<div class="qiandao-main" id="js-qiandao-main">
+					<ul class="qiandao-list" id="js-qiandao-list">
+					</ul>
+				</div>
+			</div>
+			<div class="qiandao-right">
+				<div class="qiandao-top">
+					<div class="just-qiandao qiandao-sprits" id="js-just-qiandao">
+					</div>
+					<p class="qiandao-notic"></p>
+				</div>
+				<div class="qiandao-bottom">
+					<div class="qiandao-rule-list">
+
+					</div>
+					<div class="qiandao-rule-list">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 我的签到 layer start -->
+<div class="qiandao-layer qiandao-history-layer">
+	<div class="qiandao-layer-con qiandao-radius">
+		<a href="javascript:;" class="close-qiandao-layer qiandao-sprits"></a>
+		<ul class="qiandao-history-inf clear">
+
+			<li>
+				<p>本月签到</p>
+				<h4>{{ all_sign.count }}</h4>天
+			</li>
+
+
+		</ul>
+		<div class="qiandao-history-table">
+			<table>
+				<thead>
+					<tr>
+						<th>签到日期</th>
+
+					</tr>
+				</thead>
+				<table>
+                    {% for sign in all_sign %}
+					<tr>
+						<td>{{  sign.signdate }}</td>
+
+					</tr>
+					{% endfor %}
+				</table>
+			</table>
+		</div>
+	</div>
+	<div class="qiandao-layer-bg"></div>
+</div>
+<!-- 我的签到 layer end -->
+<!-- 签到 layer start -->
+<div class="qiandao-layer qiandao-active">
+	<div class="qiandao-layer-con qiandao-radius">
+		<a href="javascript:;" class="close-qiandao-layer qiandao-sprits"></a>
+		<div class="yiqiandao clear">
+			<div class="yiqiandao-icon qiandao-sprits"></div>签到成功！
+		</div>
+
+
+	</div>
+	<div class="qiandao-layer-bg"></div>
+</div>
+
+</body>
+</html>
+
+{% endblock %}
+
+

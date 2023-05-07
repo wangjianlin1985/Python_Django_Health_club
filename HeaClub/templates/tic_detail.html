@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    论坛评论
+{% endblock %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'css/front_postdetail.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/ueditor/UE/third-party/SyntaxHighlighter/shCoreDefault.css' %}">
+        <script type="text/javascript" src="{% static '/ueditor/UE/third-party/SyntaxHighlighter/shCore.js' %}"></script>
+        <script type="text/javascript" src="{% static '/ueditor/UE/ueditor.config.js' %}"></script>
+        <script type="text/javascript" src="{% static '/ueditor/UE/ueditor.all.min.js' %}"></script>
+        <script type="text/javascript" src="{% static '/ueditor/UE/lang/zh-cn/zh-cn.js' %}"></script>
+
+        <script type="text/javascript">
+            var ue = UE.getEditor('editor');
+            SyntaxHighlighter.all();
+        </script>
+{% endblock %}
+{% block custom_bread %}
+    <div class="wp">
+        <ul class="crumbs">
+            <li><a href="{% url 'index' %}">首页</a>></li>
+            <li><a href="{% url 'bbs:index' %}">论坛</a>></li>
+            <li>评论</li>
+        </ul>
+    </div>
+{% endblock %}
+{% block content %}<section>
+   <div class="wp" >
+       <div class="list" style="margin-top: 0px">
+       <div class="left layout">
+        <div class="head" style="border:1px solid #c0bcb6;">
+                        <h1 class="tab_header" style="margin-left: 5px">评论帖子</h1>
+        </div>
+
+      <div class="left-container">
+            <div class="post-container">
+                <div class="post-container-inner">
+                    <div class="post-top">
+                        <h1 style="font-size: 20px">{{ tie.title }}</h1>
+                        <p class="post-info">
+                            <span>发表时间：{{ tie.add_time }}</span>
+                            <span>作者：{{ tie.author.username }}</span>
+                            <span>所属板块：{{ tie.board.name }}</span>
+                            <span class="comment-count">评论数：{{ tie.comment_num }}</span>
+                            <span class="read-count">阅读数：{{ tie.read_num }}</span>
+                        </p>
+                    </div>
+                    <div class="post-content">
+                        {% autoescape off %}
+                           {{ tie.content }}
+                        {% endautoescape %}
+
+                    </div>
+
+                </div>
+                <div class="comment-btn-group">
+                    <form action="{% url 'bbs:comment' %}" method="post">
+                        <input type="hidden" name="tie_id" value="{{ tie.id }}">
+                        <script id="editor" type="text/plain" name="content"></script>
+                        <button type="submit" class="btn btn-danger" id="submit-btn">发表评论</button>
+                    {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+            <div class="comment-list-group">
+                <div class="comment-list-group-inner">
+                    <div class="comment-title">
+                        <p>评论列表</p>
+                    </div>
+
+                    <ul class="comment-list">
+                        {% for comment in comments %}
+                             <li>
+                                <div class="comment-img">
+                                    <a href="#"><img class="user-head" src="{{ MEDIA_URL }}{{ comment.author.image }}" alt="" width="40" height="40"></a>
+                                </div>
+                                <div class="comment-content">
+                                    <p class="author-info">
+                                        <span>{{ comment.author.username }}</span>
+                                        <span>{{ comment.add_time }}</span>
+                                    </p>
+                                        <div class="origin-comment-group">
+                                            <blockquote>
+                                                {{ comment.author.username }} 发表于 {{ comment.add_time }}
+                                                <p>{% autoescape off %}{{ comment.content }}{% endautoescape %}</p>
+                                            </blockquote>
+                                        </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+       </div></div>
+
+
+    </div>
+</section>
+
+{% endblock %}

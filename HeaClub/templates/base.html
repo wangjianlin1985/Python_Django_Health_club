@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<head>
+	<meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+	<title>{% block title %}健身平台首页{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    {% block custom_css %}{% endblock %}
+    <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+
+</head>
+
+<body>
+<section class="headerwrap">
+    <header>
+		<div  class=" header">
+ 			<div class="top">
+				<div class="wp">
+					<div class="fl"><p style="	font-size: 18px;">健身平台欢迎你！</p></div>
+					<!--登录后跳转-->
+                        {% if request.user.is_authenticated %}
+                        <div class="personal">
+                            <dl class="user fr">
+                                 <dd ><a style="color: white" class="fr" href="{% url 'users:logout' %}">退出</a></dd>
+                                       <dd>{% if request.user.type == 'tea' %}
+                                         <a class="personcenter fl"  style="color: white" href="{% url 'teacher:teacher_info' %}">个人中心</a>
+                                    {% else %}
+	                                    <a class="personcenter fl" style="color: white" href="{% url 'users:user_info' %}">个人中心</a>
+                                    {% endif %}</dd>
+                                <dt ><img width="20" height="20" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
+                                <dd style="margin-left: 0px;">{{ user.username }}</dd>
+
+                            </dl>
+                        </div>
+                    {% else %}
+                        <a style="color:white ;font-size:15px " class="fr registerbtn" href="{% url 'register' %}">免费注册</a>
+                        <a style="color:white;font-size:15px" class="fr loginbtn" href="{% url 'login' %}">登录</a>
+                    {% endif %}
+				</div>
+			</div>
+
+            <div class="middle">
+                <div class="wp">
+                    <a href="/" ><img class="fl" style="margin-top: 20px" src="{% static 'images/logo.png' %}"/></a>
+                </div>
+
+				<div class="nav">
+					<div class="wp">
+						<ul>
+							<li {% if request.path == '/' %}class="active" {% endif %}><a href="{% url 'index' %}">首页</a></li>
+
+							<li {% if request.path|slice:22 == '/teacher/teacher_list' %}class="active"{% endif %}>
+								<a href="{% url 'teacher:teacher_list' %}">教练</a>
+							</li>
+							<li {% if request.path|slice:'19' == '/course/course_list/' %}class="active" {% endif %}><a href="{% url 'course:course_list' '1' %}">全部课程</a></li>
+						    <li {% if request.path|slice:10 == '/bbs/index' %}class="active"{% endif %}>
+								<a href="{% url 'bbs:index' %}">论坛</a>
+							</li>
+                        </ul>
+					</div>
+				</div>
+
+            </div>
+			</div>
+    </header>
+</section>
+<!--crumbs start-->
+{% block custom_bread %}
+<section>
+	<div class="wp">
+		<ul  class="crumbs">
+			<li><a href="/">首页</a>></li>
+		</ul>
+	</div>
+</section>
+{% endblock %}
+{% block content %}
+{% endblock %}
+
+<script src="{% static 'js/selectUi.js' %}" type='text/javascript'></script>
+<script src="{% static 'js/deco-common.js' %}" type='text/javascript'></script>
+<script type="text/javascript" src="{% static 'js/plugins/laydate/laydate.js' %}"></script>
+<script src="{% static 'js/plugins/layer/layer.js' %}"></script>
+<script src="{% static 'js/plugins/queryCity/js/public.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/unslider.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/plugins/jquery.scrollLoading.js' %}"  type="text/javascript"></script>
+<script src="{% static 'js/deco-common.js' %}"  type="text/javascript"></script>
+{% block custom_js %}{% endblock %}
+</body>
+</html>

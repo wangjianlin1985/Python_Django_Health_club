@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/../MiniMovie" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../MovieBBS" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../bookstore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../daily_fresh_food_mall_django" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../libraryMS" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../music" vcs="Git" />
+  </component>
+</project>

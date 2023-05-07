@@ -1,0 +1,83 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}个人信息管理{% endblock %}
+
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="/users/info/">个人中心</a>></li>
+                <li>开通会员</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block right_content %}
+    <div class="right">
+        <div class="personal_des ">
+            <div class="head" style="border:1px solid #c0bcb6; margin-left: 26px">
+                <h1>开通会员</h1>
+            </div>
+            <div class="right">
+                <div style=" height:280px; background-image:url('/static/images/tim.jpg');margin-top: 0px ;">
+
+                    <div style="position: absolute;top:70px;left: 42%">
+                        <p style="font-weight: bold;font-size: 20px; text-align: center;">
+                                 VIP会员独享专有特权，仅需298元/年
+                        </p>
+                    </div>
+                    <div class="bgmk">
+                    <div align="center"><img src="/static/images/hy_img.png" style="border-radius: 2em 2em 2em 2em;">
+                    </div>
+                    <div align="center" style="margin-top: 20px"><span>开通会员畅享全部课程</span></div>
+                    <div align="center" style="margin-top: 20px">
+                        <input type="button"
+                               style="width:150px;height:37px;background-color:darkorange;border-radius:15px;cursor:pointer"
+                               value="立即开通" onclick="member()">
+
+                    </div></div></div>
+                <div class="group_list" style="margin-top:20px">
+                    <h2 style="font-weight: bold;font-size: 20px; text-align: center;">
+                            会员特权
+                        </h2>
+                    <div class="boxx"  >
+                        <img class="pic" src="/static/images/feature1.png"/>
+					    <p class="center">会员特权1</p>
+                    </div>
+                    <div class="boxx" style="margin-left: 7px">
+                              <img class="pic" src="/static/images/feature1.png"/>
+					    <p class="center">会员特权2</p>
+                    </div>
+                    <div class="boxx" style="margin-left:7px">
+                              <img class="pic" src="/static/images/feature1.png"/>
+					    <p class="center">会员特权3</p>
+                    </div>
+                         <div class="boxx" style="margin-left: 7px">
+                              <img class="pic" src="/static/images/feature1.png"/>
+					    <p class="center">会员特权4</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+
+    <script>
+        var member = function () {
+            $.ajax({
+                type: "POST",
+                url: "{% url "users:member" %}",
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                async: true,
+                success: function (data) {
+                    window.open(data.pay_url)
+                },
+            });
+
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'teacher-base.html' %}
+{% block title %}健身平台{% endblock %}
+{% load staticfiles %}
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'teacher:teacher_info'%}">个人中心</a></li>
+                <li>学员查询</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block right_content %}
+    <div class="right" >
+            <div class="personal_des Releasecont">
+                <div class="head">
+                    <h1>我的粉丝</h1>
+                </div>
+            </div>
+            <div class="personal_des permessage">
+
+                <div class="messagelist">
+                    {% for teacher in teacher_list %}
+                    <div class=" butler_list butler-fav-box">
+                        <dl class="des users">
+                            <dt>
+                                <a >
+                                    <img width="100" height="100" src="{{ MEDIA_URL }}{{ teacher.user.image }}"/>
+                                </a>
+                            </dt>
+                            <dd>
+                                <h1>
+                                    <a href="">
+                                        {{ teacher.user.username }}
+                                    </a>
+                                </h1>
+                                <ul class="cont clearfix">
+                                    <li >电话：    {{ teacher.user.mobile }}</li>
+                                    <li>住址：    {{ teacher.user.address }}</li>
+                                </ul>
+
+                            </dd>
+{#                            <div class="delete jsDeleteFav_teacher" data-favid="{{ teacher.id }}"></div>#}
+                        </dl>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+

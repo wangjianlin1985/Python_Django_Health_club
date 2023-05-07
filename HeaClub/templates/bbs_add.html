@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+    发布帖子
+{% endblock %}
+
+{% block custom_css %}
+    <link rel="stylesheet" type="text/css"
+          href="{% static '/ueditor/UE/third-party/SyntaxHighlighter/shCoreDefault.css' %}">
+    <script type="text/javascript" src="{% static '/ueditor/UE/third-party/SyntaxHighlighter/shCore.js' %}"></script>
+    <script type="text/javascript" src="{% static '/ueditor/UE/ueditor.config.js' %}"></script>
+    <script type="text/javascript" src="{% static '/ueditor/UE/ueditor.all.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/ueditor/UE/lang/zh-cn/zh-cn.js' %}"></script>
+
+    <script type="text/javascript">
+        var ue = UE.getEditor('editor');
+        SyntaxHighlighter.all();
+    </script>
+{% endblock %}
+{% block custom_bread %}
+    <div class="wp">
+        <ul class="crumbs">
+            <li><a href="{% url 'index' %}">首页</a>></li>
+            <li><a href="{% url 'bbs:index' %}">论坛</a>></li>
+            <li>发布帖子</li>
+        </ul>
+    </div>
+{% endblock %}
+{% block content %}
+    <section>
+        <div class="wp">
+            <div class="list">
+                <div class="left layout">
+                    <div class="head" style="border:1px solid #c0bcb6;">
+                        <h1 class="tab_header" style="margin-left: 5px">发布帖子</h1>
+                    </div>
+                    <div id="inWindow">
+                        <div class="tab_cont" id="" content="">
+                            <form action="{% url 'bbs:add_topic' %}" method="post">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" style="font-size: 20px">标题:</span>
+                                        <input type="text" class="form-control" name="title"
+                                               style="margin-left: 2px;width: 180px;height: 30px">
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 15px">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" style="font-size: 20px">板块:</span>
+                                        <select name="board_id" class="form-control" style="margin-left: 2px;width: 180px;height: 30px">
+
+                                            {% for board in boards %}
+                                                <option value="{{ board.id }}">{{ board.name }}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </div>
+                                </div>
+                                 <div class="form-group" style="margin-top: 15px">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" style="font-size: 20px">内容:</span>
+                                     <script id="editor" type="text/plain" name="content"></script>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" style="background: #0b92e0;width: 80px;height: 30px" id="submit-btn">发布帖子</button>
+                                </div>
+                                {% csrf_token %}
+                            </form>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

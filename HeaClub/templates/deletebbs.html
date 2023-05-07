@@ -1,0 +1,84 @@
+{% extends 'teacher-base.html' %}
+{% block title %}健身平台{% endblock %}
+{% load staticfiles %}
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'teacher:teacher_info'%}">个人中心</a></li>
+                <li>我的帖子</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block right_content %}
+    <div class="right" >
+            <div class="personal_des Releasecont">
+                <div class="head">
+                    <h1>我的帖子</h1>
+                </div>
+            </div>
+            <div class="personal_des permessage">
+
+                <div class="messagelist">
+                    {% for tie in post_all %}
+                    <div class=" butler_list butler-fav-box">
+                        <dl class="des users" >
+                            <dt style="width: 60px;height: 60px" >
+                                     <a  href="{% url 'bbs:detail' tie.id %}">
+                        <div class="picpic" style="width: 60px;height: 60px" ><img src="{{ MEDIA_URL }}{{ tie.author.image }}"  width="60px" height="60px" class="scrollLoading"></div></a>
+                            </dt>
+                            <dd>
+                                <h1>
+                                    <a href="{% url 'bbs:detail' tie.id %}"> <h1>{{ tie.title }}</h1></a>
+                                </h1>
+                                <ul class="cont clearfix">
+                                 <li><span>作者：{{ tie.author.username }}</span></li>
+                                <li> <span>发布时间：{{ tie.add_time }}</span></li>
+                                <li> <span>评论：{{ tie.comment_num }}</span></li>
+                                <li><span>阅读数：{{ tie.read_num }}</span></li>
+                                </ul>
+                                     <input type="hidden" id="bbsid" name="bbsid" value="{{ tie.id }}">
+                                <input type="button" value="删除" style="float: right;background: #4caf50;color: #090909;font-size: 16px;display: inline-block;
+                                border: none;padding: 10px 26px;text-align: center" id="deletebbd">
+
+                            </dd>
+
+
+
+                        </dl>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    <script>
+     //保存个人资料
+    $('#deletebbd').on('click', function(){
+
+        console.log('1212')
+        var token =$('input[name=csrfmiddlewaretoken]').val();
+        var bbsid=$("#bbsid").val();
+        $.ajax({
+            cache: false,
+            type: 'post',
+            dataType:'json',
+            url:"/teacher/deletebbs",
+            data:{'bbsid':bbsid ,'csrfmiddlewaretoken':token},
+            async: true,
+
+            success: function(data) {
+                if(data.status == "success"){
+                       location.href = "{% url 'teacher:deletebbs' %}";
+                       location.reload();
+                }
+            }
+
+        });
+    });
+    </script>
+{% endblock %}
+
+

@@ -1,0 +1,68 @@
+
+    <div class="modal fade" id="editBookInfo" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">修改课程内容</h4>
+            </div>
+
+            <div id="editBookModal" class="modal-body">
+              <div class="form-horizontal">
+
+                <div class="form-group">
+                  <label for="name" class="col-sm-2 control-label">课程名:*</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="name" type="text">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="detail" class="col-sm-2 control-label">课程详情:*</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="detail" type="text">
+                  </div>
+                </div>
+              <div class="form-group">
+                <label for="degree" class="col-sm-2 control-label">难度:*</label>
+                <div class="col-sm-10">
+                  	<input type="radio" id="jc" name="degree" value="jc" checked="checked">零基础
+							<input type="radio" name="degree" value="cj" >初级
+                            <input type="radio" name="degree" value="zj" >中级
+                            <input type="radio" name="degree" value="gj" >高级
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="heat" class="col-sm-2 control-label">热量:*</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="heat" name="heat" type="text">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="learn_times" class="col-sm-2 control-label">时长:*</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="learn_times"  name="learn_times" type="text">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="is_m" class="col-sm-2 control-label">是否会员:*</label>
+                <div class="col-sm-10">
+                 <input type="radio"  id ='t' name="is_m" value="1">是
+						<input type="radio" id ='f' name="is_m" value="0"  checked="checked">否
+                </div>
+              </div>
+              <div class="form-group">
+
+        <label for="image" class="col-sm-2 control-label">封面图:*</label>
+        <div class="col-sm-10">
+
+          <input class="form-control"  id="image" type="file" name="image"  class="js-img-up" value="" target='frameFile'>
+        </div>
+
+      </div>
+              </div>
+            </div>        <button id="cancelEdit" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                      <button id="saveEdit" type="submit" class="btn btn-success" >保存</button>
+
+          </div>
+        </div>
+      </div>

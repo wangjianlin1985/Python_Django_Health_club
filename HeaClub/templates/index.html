@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block title %}网络健身平台{% endblock %}
+{% load staticfiles %}
+{% block custom_bread %}
+{% endblock %}
+
+{% block custom_js %}
+    <script type="text/javascript" src="/static/js/index.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="banner">
+			<div class="wp">
+				<div class="fl">
+					<div class="imgslide">
+						<ul class="imgs">
+                            {% if all_banners %}
+                            {% for banner in all_banners %}
+                            <li>
+                                    <a href="{{ banner.url }}">
+                                        <img width="1200" height="400" src="{{ MEDIA_URL }}{{ banner.image }}" />
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                                <li>
+                                    <a href="/static/images/b1.jpg">
+                                        <img width="1200" height="400" src="{% static "/images/b1.jpg" %}" />
+                                    </a>
+                                </li>
+                                 <li>
+                                    <a href="/static/images/b2.jpg">
+                                        <img width="1200" height="400" src="{% static "/images/b2.jpg" %}" />
+                                    </a>
+                                </li>
+                                 <li>
+                                    <a href="/static/images/b3.jpg">
+                                        <img width="1200" height="400" src="{% static "/images/b3.jpg" %}" />
+                                    </a>
+                                </li>
+                        {% endif %}
+						</ul>
+					</div>
+					<div class="unslider-arrow prev"></div>
+					<div class="unslider-arrow next"></div>
+				</div>
+				</div>
+			</div>
+	<section>
+		<div class="module">
+			<div class="wp" >
+                <div style="margin-top: 15px">
+                <img style="height: 15px; vertical-align: middle;width:500px" src="{% static "/images/page.png" %}" />
+                    <span style="font-size: 30px;font-weight:bold;">金牌课程</span>
+                <img style="height: 15px; vertical-align: middle;width: 500px" src="{% static "/images/page.png" %}" />
+                </div>
+				<div class="module1 eachmod">
+					<div class="right group_list">
+                            {% for course in all_course %}
+                            <div class="module1_{{ forloop.counter|add:4 }} box">
+                                <a href="{% url 'course:course_detail' course.id %}">
+                                    <img width="233" height="190" src="{{ MEDIA_URL }}{{ course.image }}"/>
+                                </a>
+                                <div class="des">
+                                    <a href="{% url 'course:course_detail' course.id %}">
+                                        <h2 title="{{ course.name }}">{{ course.name }}</h2>
+                                    </a>
+                                    <span class="fl">难度：<i class="key">{{ course.get_degree_display }}</i></span>
+                                    <span class="fr">热量：{{ course.heat }}千卡</span>
+                                </div>
+                                <div class="bottom">
+                                    <span class="fl" title="{{ course.course_org.name }}">{{ course.course_org.name }}</span>
+                                    <span class="star fr">{{ course.fav_nums }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+	<section>
+		<div class="module greybg">
+			<div class="wp">
+				      <div style="margin-top: 15px">
+                <img style="height: 15px; vertical-align: middle;width:500px" src="{% static "/images/page.png" %}" />
+                    <span style="font-size: 30px;font-weight:bold;">专业教练</span>
+                <img style="height: 15px; vertical-align: middle;width: 500px" src="{% static "/images/page.png" %}" />
+                </div>
+				<div class="module3 eachmod">
+
+					<div class="right">
+						<ul>
+                            {% for teacher in all_teacher %}
+                                <li class="{% if forloop.counter|divisibleby:4 %}five{% endif %}">
+                                    <a href="{% url 'teacher:detail' teacher.user.id %}">
+                                        <div class="company">
+                                            <img width="232" height="190" src="{{ MEDIA_URL }}{{ teacher.user.image }}"/>
+                                             <h2>工号：{{ teacher.user.username}}</h2>
+{#                                    <span class="fl">难度：<i class="key">11</i></span>#}
+{#                                    <span class="fr">学习人数：11</span>#}
+                                             </div>
+
+                                    </a>
+                                </li>
+                            {% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+
